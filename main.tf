@@ -34,7 +34,19 @@ resource "google_compute_instance" "instancevm" {
   }
 }
 
+resource "null_resource" "delete_ssh_firewall" {
+  provisioner "local-exec" {
+    command = "gcloud compute firewall-rules delete allow-ssh --quiet"
+  }
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+}
+
 resource "google_compute_firewall" "allow_ssh" {
+depends_on = [null_resource.delete_ssh_firewall]  # Ensures the delete command runs first
+
   name    = "allow-ssh"
   network = "default"
 

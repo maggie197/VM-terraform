@@ -1,4 +1,5 @@
 provider "google" {
+  credentials = file("terraform-key.json")
   project = "megija-terraform-project"    # project id
   region  = "europe-west2"      # add region  
   zone    = "europe-west2-b"    # add zone

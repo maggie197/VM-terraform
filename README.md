@@ -1,4 +1,3 @@
-
 # Terraform CI/CD pipeline that creates Virtual Machine (VM) on Google Cloud using GitHub Actions
 
 ## 1. Create a Terraform configuration file
@@ -164,3 +163,4 @@ git push -u origin main
 * Find the workflow run you want to re-run.
 
 * Click on it, and you'll see a Re-run jobs or Re-run failed jobs button.
+

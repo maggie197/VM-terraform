@@ -4,8 +4,8 @@ provider "google" {
   zone    = "europe-west2-b"    # add zone
 }
 
-resource "google_compute_instance" "instance_vm" {
-  name         = "instance_vm"
+resource "google_compute_instance" "instancevm" {
+  name         = "instancevm"
   machine_type = "e2-medium"
   zone         = "europe-west2-b"   # ad zone
 

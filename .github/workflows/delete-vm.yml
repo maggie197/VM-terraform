@@ -1,7 +1,9 @@
+# .github/workflows/delete-vm.yml
+
 name: Destroy Google Cloud VM
 
 on:
-  workflow_dispatch:  # Manually trigger this pipeline
+  workflow_dispatch:  # Trigger manually
 
 jobs:
   destroy-vm:
@@ -15,11 +17,11 @@ jobs:
         with:
           terraform_version: 1.4.0
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Initialize Terraform
+        run: terraform init -input=false
 
-      - name: Terraform Plan (Destroy VM)
+      - name: Plan to Destroy VM
         run: terraform plan -destroy -out=tfplan
 
-      - name: Terraform Apply (Destroy VM)
+      - name: Apply and Destroy VM
         run: terraform apply -auto-approve tfplan

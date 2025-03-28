@@ -1,0 +1,25 @@
+name: Destroy Google Cloud VM
+
+on:
+  workflow_dispatch:  # Manually trigger this pipeline
+
+jobs:
+  destroy-vm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.4.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan (Destroy VM)
+        run: terraform plan -destroy -out=tfplan
+
+      - name: Terraform Apply (Destroy VM)
+        run: terraform apply -auto-approve tfplan

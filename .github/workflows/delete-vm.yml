@@ -29,6 +29,11 @@ jobs:
       - name: Initialize Terraform
         run: terraform init -input=false
 
+            # Import the existing VM into Terraform state
+      - name: Import Existing VM
+        run: |
+          terraform import google_compute_instance.instancevm projects/${{ secrets.GCP_PROJECT_ID }}/zones/${{ secrets.GCP_ZONE }}/instances/instancevm || echo "VM already imported or not found, skipping."
+
       - name: Plan to Destroy VM
         run: terraform plan -destroy -out=tfplan
 

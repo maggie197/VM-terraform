@@ -17,14 +17,14 @@ jobs:
         with:
           terraform_version: 1.4.0
 
-      # Create the terraform-key.json file from the secret
-      - name: Set up GCP credentials
-        run: echo '${{ secrets.GCP_CREDENTIALS }}' > $HOME/terraform-key.json
+      # Authenticate with GCP using Base64 encoded secret
+      - name: Authenticate with GCP
+        run: |
+          echo '${{ secrets.GCP_CREDENTIALS }}' | base64 --decode > terraform-key.json
+          gcloud auth activate-service-account --key-file=terraform-key.json
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+          gcloud config set compute/zone ${{ secrets.GCP_ZONE }}
 
-      # Set environment variable to use the credentials
-      - name: Set GOOGLE_APPLICATION_CREDENTIALS
-        run: echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/terraform-key.json" >> $GITHUB_ENV
-    
 
       - name: Initialize Terraform
         run: terraform init -input=false

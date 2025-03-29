@@ -1,4 +1,4 @@
-resource "google_instance" "instance_vm" {
+resource "google_compute_instance" "instancevm" {
   provider     = google.delete
   name         = "instancevm"
   machine_type = "e2-medium"

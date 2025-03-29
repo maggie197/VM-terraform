@@ -1,6 +1,3 @@
-resource "google_compute_instance" {
-  provider     = google.delete
-  name         = "instancevm"
-  machine_type = "e2-medium"
-  zone         = "europe-west2-b"
-}
+# delete-vm.tf
+# No need to define any resources.
+# Terraform will track the VM from main.tf and destroy it when needed.

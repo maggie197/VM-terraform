@@ -15,7 +15,7 @@ Create a directory for your Terraform project and inside it, create a main.tf fi
     resource "google_compute_instance" "opencart_vm" {
     name         = "opencart-vm"
     machine_type = "e2-medium"
-    zone         = "zone"   # ad zone
+    zone         = "zone"   # add zone
 
     tags = ["http-server", "https-server", "ssh-server"]
 
@@ -164,3 +164,55 @@ git push -u origin main
 
 * Click on it, and you'll see a Re-run jobs or Re-run failed jobs button.
 
+# Create a Terraform pipeline that deletes a virtual machine in Google Cloud (Optional)
+
+1. Delete the VM Pipeline
+
+This pipeline will delete the virtual machine by running the Terraform destroy command. It can also be manually triggered using workflow_dispatch.
+
+```
+# .github/workflows/delete-vm.yml
+
+name: Destroy Google Cloud VM
+
+on:
+  workflow_dispatch:  # Trigger manually
+
+jobs:
+  destroy-vm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.4.0
+
+      # Authenticate with GCP using Base64 encoded secret
+      - name: Authenticate with GCP
+        run: |
+          echo '${{ secrets.GCP_CREDENTIALS }}' | base64 --decode > terraform-key.json
+          gcloud auth activate-service-account --key-file=terraform-key.json
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+          gcloud config set compute/zone ${{ secrets.GCP_ZONE }}
+
+
+      - name: Initialize Terraform
+        run: terraform init -input=false
+
+            # Import the existing VM into Terraform state
+      - name: Import Existing VM
+        run: |
+          terraform import google_compute_instance.instancevm projects/${{ secrets.GCP_PROJECT_ID }}/zones/${{ secrets.GCP_ZONE }}/instances/instancevm || echo "VM already imported or not found, skipping."
+
+      - name: Plan to Destroy VM
+        run: terraform plan -destroy -out=tfplan
+
+      - name: Apply and Destroy VM
+        run: terraform apply -auto-approve tfplan
+
+```
+
+2. Git push and commit changes

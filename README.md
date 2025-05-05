@@ -50,7 +50,11 @@ Save it as terraform-key.json in your Terraform project directory.
     terraform apply
 
 ```
+## 8. SSH into instance
+```
+    gcloud compute ssh INSTANCE_NAME --project PROJECT_ID --zone ZONE
 
+```
 
 # Terraform CI/CD pipeline that creates Virtual Machine (VM) on Google Cloud using GitHub Actions
 

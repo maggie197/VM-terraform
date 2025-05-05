@@ -1,3 +1,57 @@
+#  How to Deploy Terraform on Gcloud
+
+## 1. Login to your Gcloud account:
+
+```
+    gcloud auth login
+```
+
+## 2. Set your project
+
+```
+    gcloud config set project your-project-id
+
+```
+## 3. Verify login:
+
+```
+gcloud auth list
+
+```
+
+## 4. Navigate to your Terraform project directory:
+
+  ```
+    cd /path/to/your/terraform/project
+
+  ```    
+## 5. Create a service account key (if you don’t have one)
+
+Go to Google Cloud Console → IAM & Admin → Service Accounts
+
+Choose your service account or create one.
+
+Click "Manage keys" → "Add key" → "Create new key"
+
+Choose JSON, then download the file.
+
+Save it as terraform-key.json in your Terraform project directory.
+
+## 6. Initialize the Terraform working directory:
+
+```
+    terraform init
+
+```
+
+## 7. Apply the Terraform configuration:
+
+```
+    terraform apply
+
+```
+
+
 # Terraform CI/CD pipeline that creates Virtual Machine (VM) on Google Cloud using GitHub Actions
 
 ## 1. Create a Terraform configuration file
